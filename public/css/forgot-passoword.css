@@ -1,0 +1,80 @@
+.forgot-password-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background: white;
+    min-height: 80vh;
+}
+.forgot-password-card {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+.forgot-password-logo {
+    width: 80px;
+    margin-bottom: 15px;
+}
+h2 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+input[type="email"]:focus {
+    border-color: #e85408;
+    outline: none;
+}
+.btn-submit {
+    width: 100%;
+    background-color: #e85408;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-submit:hover {
+    background-color: #c74406;
+}
+.login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+.login-link a {
+    color: #e85408;
+    font-weight: 600;
+    text-decoration: none;
+}
+.login-link a:hover {
+    text-decoration: underline;
+}

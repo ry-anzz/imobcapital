@@ -2,29 +2,43 @@
 
         @section('content')
 
-        <header class="site-header">
-            <div class="container">
-                <div class="logo">
-                    <a href="#welcome-section">
-                        <img src="{{ asset('images/logo.png') }}" alt="ImobCapital" id="logo" />
-                    </a>
-                </div>
-                <nav class="nav-links">
-                    <a href="#como-funciona">Como funciona</a>
-                    <a href="#sobre-nos">Sobre nós</a>
-                    <a href="#contato">Contato</a>
-                </nav>
-                <div class="profile-dropdown">
-                <span class="material-symbols-outlined">
-        account_circle
-        </span>
-                    <div class="dropdown-menu">
-                        <a href="/login">Entrar</a>
-                        <a href="/register">Cadastrar</a>
-                    </div>
-                </div>
-            </div>
-        </header>
+       <header class="site-header">
+    <div class="container">
+        <div class="logo">
+            <a href="#welcome-section">
+                <img src="{{ asset('images/logo.png') }}" alt="ImobCapital" id="logo" />
+            </a>
+        </div>
+
+        {{-- Menu hambúrguer para mobile --}}
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span class="material-symbols-outlined">menu</span>
+        </div>
+
+        {{-- Menu de navegação para desktop --}}
+        <nav class="nav-links desktop-only">
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#sobre-nos">Sobre nós</a>
+            <a href="#contato">Contato</a>
+        </nav>
+        
+{{-- Menu do usuário no desktop --}}
+<div class="profile-dropdown desktop-only">
+    <span class="material-symbols-outlined">account_circle</span>
+    <div class="dropdown-menu">
+        <a href="{{ route('login') }}">Entrar</a>
+        <a href="{{ route('register') }}">Cadastrar</a>
+    </div>
+</div>
+
+
+    {{-- Menu hambúrguer mobile expandido --}}
+    <div class="mobile-dropdown" id="mobile-dropdown">
+       <a href="{{ route('login') }}">Entrar</a>
+        <a href="{{ route('register') }}">Cadastrar</a>
+    </div>
+</header>
+
 
         <section class="welcome-section" id="welcome-section">
             <div class="container">
@@ -250,6 +264,15 @@
             }
 
             document.addEventListener("DOMContentLoaded", typeEffect);
+
+            document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.getElementById("mobile-menu-toggle");
+        const dropdown = document.getElementById("mobile-dropdown");
+
+        toggle.addEventListener("click", function () {
+            dropdown.classList.toggle("show");
+        });
+    });
         </script>
 
 
