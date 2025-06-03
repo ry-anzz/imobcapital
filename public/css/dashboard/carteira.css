@@ -1,0 +1,80 @@
+:root {
+    --laranja: #e85408;
+    --verde: #228833;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #f0f0f0;
+    border-radius: 1rem;
+}
+
+.carteira-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    padding-left: 40px;
+}
+
+.investimento-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    flex: 1 1 45%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.investimento-card:hover {
+    transform: translateY(-3px);
+}
+
+.investimento-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status.ativo {
+    background-color: var(--verde);
+}
+
+.status.finalizado {
+    background-color: #999;
+}
+
+.investimento-detalhes p {
+    margin: 8px 0;
+    color: #444;
+}
+
+.investimento-acao {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.ver-detalhes {
+    color: var(--laranja);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.ver-detalhes:hover {
+    text-decoration: underline;
+}

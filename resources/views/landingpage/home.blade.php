@@ -48,8 +48,8 @@
                 Simples, rápido e com total controle na palma da sua mão.</p>
 
                 <div class="btns" >
-                <a href=""><button class="btn-comecar">Começar agora</button></a>
-                <a href=""><button class="btn-saiba">Saiba Mais</button></a>
+                <a href="{{route('register')}}"><button class="btn-comecar">Começar agora</button></a>
+                <a href="#como-funciona"><button class="btn-saiba">Saiba Mais</button></a>
                 </div>
                 
         </section>

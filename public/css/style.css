@@ -57,6 +57,7 @@ body {
 .nav-links a:hover {
     border: 2px solid var(--laranja);
     border-radius: 16px;
+    text-decoration: none;
 }
 
 /* Dropdown de perfil */

@@ -1,0 +1,69 @@
+.admin-investimento-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.admin-form-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 600px;
+}
+
+.admin-form-card h3 {
+    color: var(--laranja);
+    margin-bottom: 25px;
+}
+
+.admin-form-card .form-group {
+    margin-bottom: 20px;
+}
+
+.admin-form-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+
+.admin-form-card input,
+.admin-form-card select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.btn-salvar {
+    background-color: var(--verde);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.btn-salvar:hover {
+    background-color: #1c6f2a;
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    resize: vertical;
+}
+
+small {
+    display: block;
+    margin-top: 4px;
+    color: #777;
+    font-size: 0.9rem;
+}

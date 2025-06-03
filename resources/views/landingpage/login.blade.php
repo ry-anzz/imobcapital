@@ -8,7 +8,7 @@
             <h2>Entrar na ImobCapital</h2>
         </div>
 
-        <form method="POST" action="{{ route('login') }}">
+        
             @csrf
 
             <div class="form-group">
@@ -25,8 +25,8 @@
                 <a href="{{ route('password.request') }}">Esqueceu a senha?</a>
             </div>
 
-            <button type="submit" class="btn-login">Entrar</button>
-        </form>
+            <a href="{{route('dashboard')}}"><button type="submit" class="btn-login">Entrar</button></a>
+        
 
         <p class="register-link">Não tem uma conta? <a href="{{ route('register') }}">Cadastre-se</a>
 </p>

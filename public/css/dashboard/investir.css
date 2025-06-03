@@ -1,0 +1,90 @@
+body {
+    overflow-x: hidden;
+    background-color: #f0f0f0;
+    border-radius: 1rem;
+}
+
+.invest-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.invest-form-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 600px;
+}
+
+.invest-form-card h3 {
+    color: var(--laranja);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.rentabilidade-estimada,
+.vencimento,
+.total-vencimento {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #228833;
+    margin-top: 5px;
+}
+
+.btn-investir {
+    margin-left: 400px;
+    background-color: var(--laranja);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-investir:hover {
+    background-color: #c94606;
+}
+
+.avisos-investimento {
+    background-color: #fffbe5;
+    border-left: 4px solid #e85408;
+    padding: 15px 20px;
+    border-radius: 10px;
+    width: 600px;
+}
+
+.avisos-investimento h4 {
+    margin-bottom: 10px;
+    color: #e85408;
+}
+
+.avisos-investimento ul {
+    padding-left: 20px;
+    list-style: disc;
+    color: #555;
+}

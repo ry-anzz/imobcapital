@@ -1,0 +1,94 @@
+.conta-wrapper {
+    padding: 20px;
+}
+
+.saldo-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.saldo-info h4 {
+    margin: 0;
+    color: #666;
+}
+
+.saldo-valor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--verde);
+}
+
+.acoes-conta .btn {
+    margin-left: 10px;
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filtro-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.filtro-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.historico {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.historico h4 {
+    margin-bottom: 10px;
+}
+
+.historico ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.historico li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+}
+
+.historico li:last-child {
+    border-bottom: none;
+}
+
+.tipo {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.tipo.deposito {
+    background-color: var(--verde);
+}
+.tipo.saque {
+    background-color: #e85408;
+}
+.tipo.transferencia {
+    background-color: #555;
+}
