@@ -7,20 +7,24 @@ body {
     overflow-x: hidden;
     background-color: #f0f0f0;
     border-radius: 1rem;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     padding-left: 40px;
+    padding-right: 40px;
+    box-sizing: border-box;
 }
 
 .detalhes-investimento {
     background: #fff;
     border-radius: 12px;
-    padding-left: 40px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 40px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
+    box-sizing: border-box;
 }
 
 .detalhes-investimento h3 {
@@ -50,6 +54,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     margin-right: 10px;
+    transition: background-color 0.2s ease;
 }
 
 .btn:hover {
@@ -67,6 +72,8 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .modal-content {
@@ -77,6 +84,7 @@ body {
     max-width: 500px;
     position: relative;
     animation: fadeIn 0.3s ease;
+    box-sizing: border-box;
 }
 
 .modal-content h3 {
@@ -98,6 +106,7 @@ body {
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-bottom: 15px;
+    box-sizing: border-box;
 }
 
 .modal .btn {
@@ -125,5 +134,50 @@ body {
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .detalhes-investimento {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        margin-bottom: 250px;
+    }
+
+    .modal-content {
+        margin-top: -220px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .detalhes-investimento {
+        padding: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .modal-content {
+        padding: 20px 15px;
+    }
+
+    .close {
+        top: 10px;
+        right: 15px;
     }
 }

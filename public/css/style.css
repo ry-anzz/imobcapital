@@ -34,7 +34,6 @@ body {
 }
 
 .logo {
-    margin-left: -100px;
     width: 15px;
     height: 30px;
 }
@@ -96,7 +95,7 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-.dropdown-menu a:last-child {
+.dropdown-menu a:last- ld {
     border-bottom: none;
 }
 

@@ -1,0 +1,188 @@
+:root {
+    --laranja: #e85408;
+    --verde: #228833;
+}
+
+.dashboard-title {
+    margin-bottom: 20px;
+}
+
+.codigo-indicacao {
+    font-size: 1rem;
+    color: #333;
+}
+
+.indicacoes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 40px;
+    box-sizing: border-box;
+}
+
+.niveis-indicacao {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cards-niveis {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.card-nivel {
+    background-color: #f0f0f0;
+    color: #666;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+    position: relative;
+}
+
+.card-nivel.conquistado {
+    background-color: #f6631a;
+    border: 2px solid #aaa;
+    color: white;
+}
+
+.card-nivel.atual {
+    border: 2px solid orange;
+    box-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
+}
+
+.info-indicacoes {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.resumo-indicacoes-card,
+.lista-indicacoes {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 48%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #e85408;
+    box-sizing: border-box;
+}
+
+.resumo-indicacoes-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resumo-indicacoes-card li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.lista-indicacoes table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.lista-indicacoes th,
+.lista-indicacoes td {
+    padding: 10px;
+    text-align: left;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .cards-niveis {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .resumo-indicacoes-card,
+    .lista-indicacoes {
+        width: 100%;
+    }
+    .lista-indicacoes {
+        overflow-x: auto;
+    }
+
+    .lista-indicacoes table {
+        width: 100%;
+        min-width: 500px; /* garante que a tabela tenha largura mínima */
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .lista-indicacoes th,
+    .lista-indicacoes td {
+        padding: 10px;
+        text-align: left;
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        white-space: nowrap; /* evita quebra de linha */
+    }
+
+    .lista-indicacoes th:first-child,
+    .lista-indicacoes td:first-child {
+        border-left: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .indicacoes-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .cards-niveis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-nivel {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .info-indicacoes {
+        flex-direction: column;
+    }
+
+    .dashboard-title {
+        font-size: 13pt;
+    }
+
+    .codigo-indicacao {
+        font-size: 0.9rem;
+    }
+    .lista-indicacoes {
+        overflow-x: auto;
+    }
+
+    .lista-indicacoes table {
+        width: 100%;
+        min-width: 500px; /* garante que a tabela tenha largura mínima */
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .lista-indicacoes th,
+    .lista-indicacoes td {
+        padding: 10px;
+        text-align: left;
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        white-space: nowrap; /* evita quebra de linha */
+    }
+
+    .lista-indicacoes th:first-child,
+    .lista-indicacoes td:first-child {
+        border-left: none;
+    }
+}

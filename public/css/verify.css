@@ -1,0 +1,122 @@
+:root {
+    --laranja: #e85408;
+    --laranja-hover: #e06932;
+    --verde: #228833;
+    --cinza-claro: #f4f4f4;
+    --cinza-borda: #ddd;
+    --texto: #333;
+    --texto-fraco: #666;
+    --fundo-input: #fdfdfd;
+    --sombra-card: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.verify-code-container {
+    max-width: 420px;
+    margin: 200px auto;
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    box-shadow: var(--sombra-card);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--texto);
+    box-sizing: border-box;
+}
+
+.verify-code-container h2 {
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+    padding-left: 5px;
+}
+
+.verify-code-container p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: var(--texto-fraco);
+}
+
+.verify-code-container p strong {
+    color: var(--laranja);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--texto-fraco);
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--cinza-borda);
+    background-color: var(--fundo-input);
+    font-size: 16px;
+    color: var(--texto);
+    transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(232, 84, 8, 0.15);
+}
+
+.error {
+    margin-top: 6px;
+    color: #d93025; /* vermelho para erro */
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: var(--laranja);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--laranja-hover);
+}
+
+.verify-code-container a {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--laranja);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.verify-code-container a:hover {
+    color: var(--laranja-hover);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .verify-code-container {
+        margin: 120px 15px;
+        padding: 20px 15px;
+    }
+
+    .verify-code-container h2 {
+        font-size: 18px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 12px;
+    }
+}

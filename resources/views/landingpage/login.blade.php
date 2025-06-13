@@ -8,7 +8,7 @@
             <h2>Entrar na ImobCapital</h2>
         </div>
 
-        
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
             <div class="form-group">
@@ -25,11 +25,14 @@
                 <a href="{{ route('password.request') }}">Esqueceu a senha?</a>
             </div>
 
-            <a href="{{route('dashboard')}}"><button type="submit" class="btn-login">Entrar</button></a>
-        
-
-        <p class="register-link">Não tem uma conta? <a href="{{ route('register') }}">Cadastre-se</a>
-</p>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+        @if($errors->any())
+    <div class="alert alert-danger" style="color: #e85408">
+        {{ $errors->first() }}
+    </div>
+@endif
+        <p class="register-link">Não tem uma conta? <a href="{{ route('register') }}">Cadastre-se</a></p>
     </div>
 </div>
 @endsection

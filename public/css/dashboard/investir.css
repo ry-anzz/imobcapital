@@ -2,6 +2,9 @@ body {
     overflow-x: hidden;
     background-color: #f0f0f0;
     border-radius: 1rem;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .invest-container {
@@ -11,6 +14,8 @@ body {
     margin-top: 20px;
     justify-content: center;
     align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .invest-form-card {
@@ -19,6 +24,8 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     width: 600px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .invest-form-card h3 {
@@ -52,7 +59,7 @@ body {
 .form-group input:focus {
     outline: none;
     border: none;
-    border-bottom: 1px solid #e85408; /* opcional: para manter uma linha de foco discreta */
+    border-bottom: 1px solid #e85408;
     box-shadow: none;
 }
 
@@ -66,7 +73,8 @@ body {
 }
 
 .btn-investir {
-    margin-left: 400px;
+    margin-left: auto;
+    display: block;
     background-color: var(--laranja);
     color: white;
     border: none;
@@ -87,6 +95,8 @@ body {
     padding: 15px 20px;
     border-radius: 10px;
     width: 600px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .avisos-investimento h4 {
@@ -102,4 +112,59 @@ body {
 
 input[type="range"] {
     width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    body {
+        margin-bottom: 250px;
+    }
+    .form-group input,
+    .form-group select {
+        width: 100%;
+    }
+
+    .btn-investir {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    input[type="range"] {
+        width: 90%;
+    }
+
+    .form-group input {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .invest-form-card,
+    .avisos-investimento {
+        padding: 20px 15px;
+    }
+
+    .form-group label {
+        font-size: 0.95rem;
+    }
+
+    .rentabilidade-estimada,
+    .vencimento,
+    .total-vencimento {
+        font-size: 1rem;
+    }
+
+    .btn-investir {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    input[type="range"] {
+        width: 90%;
+    }
+
+    .form-group input {
+        width: 90%;
+    }
 }

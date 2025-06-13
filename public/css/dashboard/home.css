@@ -3,32 +3,37 @@
     --verde: #228833;
 }
 
+html,
 body {
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
+    max-width: 100%;
     background-color: #f0f0f0;
-    border-radius: 1rem;
+    font-family: "Poppins", sans-serif;
 }
 
+/* Título do dashboard */
 .dashboard-title {
-    padding: 0px 10px 5px 50px;
+    padding: 10px 20px;
     margin-top: -35px;
     font-size: 20px;
     font-weight: 600;
     color: var(--laranja);
     width: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: #fff;
     border-top: 1px solid rgba(0, 0, 0, 0.207);
-
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.238);
 }
 
-/* Estilização dos cards principais */
+/* Container dos cards */
 .main-dashboard-card {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
-    padding-left: 40px;
+    padding: 0 40px;
+    box-sizing: border-box;
 }
 
 .dashboard-summary,
@@ -43,6 +48,7 @@ body {
     min-width: 280px;
     position: relative;
     transition: transform 0.2s ease;
+    box-sizing: border-box;
 }
 
 .clickable:hover {
@@ -61,7 +67,6 @@ body {
     gap: 15px;
 }
 
-/* Estilização dos valores e títulos */
 .value {
     font-size: 1.4rem;
     font-weight: bold;
@@ -74,7 +79,7 @@ h4 {
     color: #666;
 }
 
-/* Ícones de ação */
+/* Ícones */
 .icon-action {
     position: absolute;
     right: 20px;
@@ -105,6 +110,7 @@ h4 {
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-top: 30px;
+    box-sizing: border-box;
 }
 
 .chart-container h4 {
@@ -138,4 +144,63 @@ h4 {
 
 .ultimas-movimentacoes li:last-child {
     border-bottom: none;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1024px) {
+    .main-dashboard-card {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
+    .dashboard-summary,
+    .conta-corrente,
+    .indicacoes-card,
+    .ultimas-movimentacoes {
+        flex: 1 1 100%;
+    }
+
+    .chart-container {
+        margin: 30px 15px 0 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        margin-bottom: 250px;
+    }
+
+    .main-dashboard-card {
+        flex-direction: column;
+        margin-left: -15px;
+    }
+
+    .dashboard-title {
+        font-size: 12px;
+        border: none;
+        width: 100vw;
+        margin-left: -30px;
+    }
+
+    .main-dashboard-card {
+        padding: 0 0;
+    }
+
+    .value {
+        font-size: 1.2rem;
+    }
+
+    .indicacoes-card p {
+        font-size: 1rem;
+    }
+
+    .icon-action {
+        font-size: 24px;
+        right: 15px;
+        bottom: 15px;
+    }
+
+    .chart-container {
+        padding: 15px;
+    }
 }

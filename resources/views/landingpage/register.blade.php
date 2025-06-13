@@ -31,6 +31,13 @@
                 <input type="password" name="password" id="password" placeholder="********" required>
             </div>
 
+
+            <div class="form-group">
+    <label for="password_confirmation">Confirme a Senha</label>
+    <input type="password" name="password_confirmation" id="password_confirmation" placeholder="********" required>
+</div>
+
+
             <div class="form-group">
                 <label for="codigo_convite">Código de convite</label>
                 <input type="text" name="codigo_convite" id="codigo_convite" placeholder="Código de convite (opcional)">
@@ -42,6 +49,16 @@
             </div>
 
             <button type="submit" class="btn-register">Cadastrar</button>
+
+            @if ($errors->any())
+    <div class="form-errors">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         </form>
 
         <p class="login-link">Já tem uma conta? <a href="{{ route('login') }}">Entre aqui</a></p>

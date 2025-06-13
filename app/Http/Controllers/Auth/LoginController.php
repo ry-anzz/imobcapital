@@ -8,22 +8,51 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    /**
+     * Exibe o formulário de login.
+     */
     public function showLoginForm()
     {
         return view('landingpage.login');
     }
 
+    /**
+     * Processa a tentativa de login.
+     */
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        // Validação dos dados
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ], [
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.email' => 'Digite um e-mail válido.',
+            'password.required' => 'A senha é obrigatória.',
+        ]);
 
+        // Tenta autenticar o usuário
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard'); // ou para onde quiser
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard')->with('success', 'Login realizado com sucesso!');
         }
 
+        // Se falhar, retorna com erro
         return back()->withErrors([
-            'email' => 'As credenciais estão incorretas.',
-        ])->withInput();
+            'email' => 'As credenciais fornecidas estão incorretas.',
+        ])->withInput($request->only('email'));
+    }
+
+    /**
+     * Faz logout do usuário.
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Logout realizado com sucesso!');
     }
 }
-

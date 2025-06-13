@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard/conta.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/investir.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/investiradm.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/indicar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard/perfil.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -24,10 +26,16 @@
        <div class="sidebar-header user-profile">
     <img src="{{ asset('images/fav.ico') }}" alt="Foto do usuário" class="user-photo">
     <div class="user-level">
-        <strong>Usuário</strong><br>
-        <span style="color:#FFA500">Nível Ouro</span>
+       <div class="user-info">
+    Olá, {{ explode(' ', Auth::user()->name)[0] ?? 'Usuário' }}
+</div>
+
+
+        <span style="color:#FFA500">Nível 10</span>
     </div>
 </div>
+
+
 
         <nav class="sidebar-nav">
             <ul>    
@@ -67,7 +75,16 @@
         <span class="text">Perfil</span>
     </a>
 </li>
-    <li><a href="/logout"><span class="material-symbols-outlined icon">logout</span><span class="text">Sair</span></a></li>
+    
+           <li>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+      <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+            <span class="material-symbols-outlined icon">logout</span>
+            <span class="text">Sair</span>
+        </button>
+    </form>
+       
 
             </ul>
         </nav>
@@ -78,6 +95,11 @@
            <button id="toggle-sidebar" class="sidebar-toggle">
     <span id="sidebar-icon" class="material-symbols-outlined" style="color:#e85408">chevron_left</span>
 </button>
+
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+    <span class="material-symbols-outlined">menu</span>
+</button>
+
 
             <div class="user-info-group">
                 <div class="user-info">Olá, Usuário</div>
@@ -97,18 +119,18 @@
 </div>
 
 <script>
-    
-   document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const toggleSidebarBtn = document.getElementById('toggle-sidebar');
     const sidebarIcon = document.getElementById('sidebar-icon');
     const toggleVisibilityBtn = document.getElementById('toggle-visibility');
     const icon = toggleVisibilityBtn.querySelector('.material-symbols-outlined');
     const values = document.querySelectorAll('.value');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const overlay = document.getElementById('overlay');
 
     let isVisible = false;
 
-    
     // Sempre iniciar com sidebar aberto
     localStorage.setItem('sidebarClosed', false);
     sidebar.classList.remove('closed');
@@ -128,11 +150,24 @@
         });
         icon.textContent = isVisible ? 'visibility' : 'visibility_off';
     });
-});
 
+    // Abrir menu mobile
+    mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('mobile-open');
+        overlay.classList.add('active');
+    });
+
+    // Fechar ao clicar no overlay
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+    });
+});
 </script>
 
 
+
+<div id="overlay" class="overlay"></div>
 
 </body>
 </html>

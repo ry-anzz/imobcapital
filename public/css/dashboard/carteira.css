@@ -78,3 +78,9 @@ body {
 .ver-detalhes:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+    .carteira-wrapper {
+        padding-left: 0;
+    }
+}

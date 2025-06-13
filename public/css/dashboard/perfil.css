@@ -1,0 +1,118 @@
+:root {
+    --laranja: #e85408;
+    --laranja-hover: #e06932;
+    --verde: #228833;
+    --cinza-claro: #f4f4f4;
+    --cinza-borda: #ddd;
+    --texto: #333;
+    --texto-fraco: #666;
+    --fundo-input: #fdfdfd;
+    --sombra-card: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.perfil-wrapper {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding: 0 40px;
+}
+
+.card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 14px;
+    box-shadow: var(--sombra-card);
+    width: 100%;
+    flex: 1;
+    min-width: 320px;
+    transition: 0.3s;
+}
+
+.card:first-child {
+    border-left: 4px solid var(--laranja);
+}
+
+.card:last-child {
+    border-right: 4px solid var(--laranja);
+}
+
+.card h3 {
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: var(--texto);
+    font-weight: 600;
+    padding-left: 10px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--texto-fraco);
+}
+
+.input-group input {
+    width: 500px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--cinza-borda);
+    background-color: var(--fundo-input);
+    font-size: 15px;
+    color: var(--texto);
+    transition: border 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 0 3px rgba(232, 84, 8, 0.1);
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 24px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.btn-laranja {
+    background-color: var(--laranja);
+    color: white;
+}
+
+.btn-laranja:hover {
+    background-color: var(--laranja-hover);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .perfil-wrapper {
+        margin-left: -60px;
+    }
+
+    .card {
+        padding: 30px 20px;
+    }
+
+    .card h3 {
+        font-size: 18px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+    .input-group input {
+        width: 300px;
+    }
+}

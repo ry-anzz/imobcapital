@@ -1,5 +1,6 @@
 .conta-wrapper {
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .saldo-box {
@@ -11,6 +12,8 @@
     align-items: center;
     margin-bottom: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .saldo-info h4 {
@@ -24,27 +27,36 @@
     color: var(--verde);
 }
 
+.acoes-conta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .acoes-conta .btn {
-    margin-left: 10px;
+    margin-left: 0;
 }
 
 .filtros {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .filtro-input {
-    flex: 1;
+    flex: 1 1 200px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    min-width: 120px;
 }
 
 .filtro-select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    min-width: 150px;
 }
 
 .historico {
@@ -70,6 +82,8 @@
     padding: 12px 0;
     border-bottom: 1px solid #eee;
     font-size: 0.95rem;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .historico li:last-child {
@@ -91,4 +105,34 @@
 }
 .tipo.transferencia {
     background-color: #555;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .saldo-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .saldo-valor {
+        font-size: 1.5rem;
+    }
+
+    .acoes-conta {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filtros {
+        flex-direction: column;
+    }
+
+    .filtro-select {
+        width: 100%;
+    }
+
+    .historico li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
