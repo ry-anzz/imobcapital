@@ -27,7 +27,14 @@ protected $fillable = [
     'telefone',
     'codigo_convite',
     'password',
+    'saldo',
 ];
+
+public function investimentos()
+{
+    return $this->hasMany(Investimento::class);
+}
+
 
 
 

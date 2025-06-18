@@ -12,8 +12,8 @@
 
             <div class="form-group">
                 <label for="rentabilidade_dia">Rentabilidade do Dia (%)</label>
-                <input type="number" step="0.001" name="rentabilidade_dia" id="rentabilidade_dia" value="0.083" required>
-                <small>Exemplo: 0.083 equivale a ~2,5% ao mês.</small>
+                <input type="number" step="0.001" name="rentabilidade_dia" id="rentabilidade_dia" placeholder="Exemplo: 0,83 equivale a ~0,83% ao mês."  required>
+              
             </div>
 
             <div class="form-group">

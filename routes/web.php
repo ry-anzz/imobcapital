@@ -6,6 +6,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\PasswordRecoveryController;
+use App\Http\Controllers\AdminInvestimentoController;
+use App\Http\Controllers\InvestimentoController;
+use App\Http\Controllers\CarteiraController;
+
 
 Route::get('/', function () {
     return view('landingpage.home');
@@ -39,17 +43,15 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard.home');
     })->name('dashboard');
 
-    Route::get('/dashboard/carteira', function () {
-        return view('dashboard.carteira');
-    });
+    Route::get('/dashboard/carteira', [InvestimentoController::class, 'carteira'])->name('carteira');
 
-    Route::get('/dashboard/detalhes', function () {
-        return view('dashboard.detalhes');
-    });
 
-    Route::get('/dashboard/investir', function () {
-        return view('dashboard.investir');
-    });
+   Route::get('/detalhes/{id}', [InvestimentoController::class, 'show'])->name('investimentos.show');
+
+
+
+   Route::get('/dashboard/investir', [InvestimentoController::class, 'create'])->name('investimentos.create');
+
 
     Route::get('/dashboard/investiradm', function () {
         return view('dashboard.investiradm');
@@ -66,7 +68,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/indicar', function () {
         return view('dashboard.indicar');
     });
+
+    Route::post('/dashboard/{id}/reinvestir', [InvestimentoController::class, 'reinvestir'])->name('investimentos.reinvestir');
+Route::post('/dashboard/{id}/resgatar', [App\Http\Controllers\InvestimentoController::class, 'resgatar'])->name('investimentos.resgatar');
+
+
 });
+
+Route::post('/admin/investimentos/ajustar-diario', [AdminInvestimentoController::class, 'ajustarDiario']);
+Route::post('/dashboard/investir', [InvestimentoController::class, 'store'])->middleware('auth')->name('investimentos.store');
+
 
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

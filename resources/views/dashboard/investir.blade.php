@@ -9,15 +9,37 @@
     <div class="invest-form-card">
         <h3>Simular e realizar investimento</h3>
 
-        <form>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if($percentual_dia > 0)
+            <p><strong>Rentabilidade atual:</strong> {{ number_format($percentual_dia, 2, ',', '.') }}% ao dia</p>
+        @else
+            <p><strong>Atenção:</strong> Nenhuma rentabilidade foi definida para hoje.</p>
+        @endif
+
+        <form action="{{ route('investimentos.store') }}" method="POST">
+            @csrf
             <div class="form-group">
                 <label for="valor">Valor a investir</label>
-                <input type="text" id="valor" name="valor" placeholder="R$ 0,00" required>
+                <!-- Campo VISUAL -->
+                <input type="text" id="valor" placeholder="R$ 0,00" required>
+                <!-- Campo oculto que será enviado no POST -->
+                <input type="hidden" id="valor_limpo" name="valor">
             </div>
 
             <div class="form-group">
                 <label for="prazo">Prazo do investimento: <strong><span id="prazoDisplay">30</span> dias</strong></label>
-                <input type="range" id="prazo" min="0" max="7" value="3">
+                <input type="range" id="prazo" name="prazo" min="0" max="7" value="3">
             </div>
 
             <div class="form-group">
@@ -44,87 +66,83 @@
         <ul>
             <li>Investimentos com carência mínima de 30 dias.</li>
             <li>Resgates antecipados podem gerar perda de rentabilidade.</li>
-            <li>Simulação baseada em taxa padrão de mercado.</li>
+            <li>Simulação baseada na taxa de hoje definida pelo administrador.</li>
         </ul>
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const valorInput = document.getElementById('valor');
-    const prazoInput = document.getElementById('prazo');
-    const prazoDisplay = document.getElementById('prazoDisplay');
-    const rentabilidadeEl = document.querySelector('.rentabilidade-estimada');
-    const vencimentoEl = document.querySelector('.vencimento');
-    const totalVencimentoEl = document.querySelector('.total-vencimento');
+    const rentabilidadePercentual = {{ $percentual_dia ?? 0 }};
 
-    const prazos = [3, 7, 15, 30, 45, 60, 90, 180];
-    const rentabilidades = {
-        3: 0.002,
-        7: 0.004,
-        15: 0.008,
-        30: 0.015,
-        45: 0.02,
-        60: 0.025,
-        90: 0.035,
-        180: 0.07
-    };
+    document.addEventListener('DOMContentLoaded', () => {
+        const valorInput = document.getElementById('valor');
+        const valorLimpoInput = document.getElementById('valor_limpo');
+        const prazoInput = document.getElementById('prazo');
+        const prazoDisplay = document.getElementById('prazoDisplay');
+        const rentabilidadeEl = document.querySelector('.rentabilidade-estimada');
+        const vencimentoEl = document.querySelector('.vencimento');
+        const totalVencimentoEl = document.querySelector('.total-vencimento');
 
-    function formatarMoeda(valor) {
-        valor = valor.replace(/\D/g, '');
-        valor = (parseInt(valor) / 100).toFixed(2) + '';
-        valor = valor.replace('.', ',');
-        valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        return 'R$ ' + valor;
-    }
+        const prazos = [3, 7, 15, 30, 45, 60, 90, 180];
 
-    function obterValorNumerico(campo) {
-        return parseFloat(campo.value.replace(/\D/g, '')) / 100;
-    }
-
-    function atualizarSimulacao() {
-        const valor = obterValorNumerico(valorInput);
-        const prazoIndex = parseInt(prazoInput.value);
-        const prazoDias = prazos[prazoIndex];
-
-        if (isNaN(valor) || valor === 0) {
-            rentabilidadeEl.textContent = '--';
-            vencimentoEl.textContent = '--';
-            totalVencimentoEl.textContent = '--';
-            return;
+        function formatarMoeda(valor) {
+            valor = valor.replace(/\D/g, '');
+            valor = (parseInt(valor) / 100).toFixed(2) + '';
+            valor = valor.replace('.', ',');
+            valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return 'R$ ' + valor;
         }
 
-        const taxa = rentabilidades[prazoDias] || 0;
-        const rendimento = valor * taxa;
-        const total = valor + rendimento;
+        function obterValorNumerico(valorStr) {
+           let valor = valorStr.replace(/\D/g, ''); // tira tudo que não é número
+    return valor ? parseFloat(valor) / 100 : 0;
+        }
 
-        prazoDisplay.textContent = prazoDias;
-        rentabilidadeEl.textContent = (taxa * 100).toFixed(2) + '% no período';
+        function atualizarSimulacao() {
+            const valor = obterValorNumerico(valorInput.value);
+            const prazoIndex = parseInt(prazoInput.value);
+            const prazoDias = prazos[prazoIndex];
 
-        const hoje = new Date();
-        const vencimento = new Date();
-        vencimento.setDate(hoje.getDate() + prazoDias);
-        vencimentoEl.textContent = vencimento.toLocaleDateString('pt-BR');
+            if (isNaN(valor) || valor === 0) {
+                rentabilidadeEl.textContent = '--';
+                vencimentoEl.textContent = '--';
+                totalVencimentoEl.textContent = '--';
+                valorLimpoInput.value = '';
+                return;
+            }
 
-        totalVencimentoEl.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
-    }
+            // Corrigido: envia valor com ponto decimal
+            valorLimpoInput.value = valor.toFixed(2).replace(',', '.');
 
-    valorInput.addEventListener('input', () => {
-    const valorNumerico = valorInput.value.replace(/\D/g, '');
-    valorInput.value = formatarMoeda(valorNumerico);
-    
-    // Coloca o cursor no fim
-    setTimeout(() => {
-        valorInput.selectionStart = valorInput.selectionEnd = valorInput.value.length;
-    }, 0);
+            const taxaDiaria = rentabilidadePercentual / 100;
+            const rendimento = valor * taxaDiaria * prazoDias;
+            const total = valor + rendimento;
 
-    atualizarSimulacao();
-});
+            prazoDisplay.textContent = prazoDias;
+            rentabilidadeEl.textContent = (taxaDiaria * prazoDias * 100).toFixed(2) + '% no período';
 
+            const hoje = new Date();
+            const vencimento = new Date();
+            vencimento.setDate(hoje.getDate() + prazoDias);
+            vencimentoEl.textContent = vencimento.toLocaleDateString('pt-BR');
 
-    prazoInput.addEventListener('input', atualizarSimulacao);
+            totalVencimentoEl.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+        }
 
-    atualizarSimulacao(); // Inicializa
-});
+        valorInput.addEventListener('input', () => {
+            const valorNumerico = valorInput.value.replace(/\D/g, '');
+            valorInput.value = formatarMoeda(valorNumerico);
+
+            setTimeout(() => {
+                valorInput.selectionStart = valorInput.selectionEnd = valorInput.value.length;
+            }, 0);
+
+            atualizarSimulacao();
+        });
+
+        prazoInput.addEventListener('input', atualizarSimulacao);
+
+        atualizarSimulacao(); // inicializa ao carregar
+    });
 </script>
 @endsection
