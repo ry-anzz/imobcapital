@@ -16,7 +16,6 @@
             <div class="investimento-detalhes">
                 <h3>ImobCapital Renda Fixa</h3>
                 <p><strong>Valor investido:</strong> R$ {{ number_format($investimento->valor, 2, ',', '.') }}</p>
-                <p><strong>Rendimento acumulado:</strong> R$ {{ number_format($investimento->rendimento_acumulado, 2, ',', '.') }}</p>
             </div>
 
             <div class="investimento-acao">

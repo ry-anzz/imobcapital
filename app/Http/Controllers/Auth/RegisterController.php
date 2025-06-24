@@ -8,18 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered; // ✅ uso correto no topo
 
 class RegisterController extends Controller
 {
     public function register(Request $request)
     {
-
-        
         $validator = Validator::make($request->all(), [
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'telefone' => 'required|string|max:20',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:8|confirmed',
             'termos'   => 'accepted',
         ]);
 
@@ -35,14 +34,14 @@ class RegisterController extends Controller
             'password'       => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
+        event(new Registered($user)); // 🔔 dispara o envio do e-mail de verificação
 
-        return redirect()-> route('login'); // ajuste a rota se necessário
+        return redirect()->route('verification.notice')
+                         ->with('message', 'Verifique seu e-mail antes de fazer login.');
     }
 
-        public function showRegistrationForm()
-{
-    return view('landingpage.register'); // ou o caminho correto da sua view
-}
-
+    public function showRegistrationForm()
+    {
+        return view('landingpage.register');
+    }
 }

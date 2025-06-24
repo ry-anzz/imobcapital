@@ -19,29 +19,39 @@ class LoginController extends Controller
     /**
      * Processa a tentativa de login.
      */
-    public function login(Request $request)
-    {
-        // Validação dos dados
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ], [
-            'email.required' => 'O e-mail é obrigatório.',
-            'email.email' => 'Digite um e-mail válido.',
-            'password.required' => 'A senha é obrigatória.',
-        ]);
+  public function login(Request $request)
+{
+    // Validação dos dados
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ], [
+        'email.required' => 'O e-mail é obrigatório.',
+        'email.email' => 'Digite um e-mail válido.',
+        'password.required' => 'A senha é obrigatória.',
+    ]);
 
-        // Tenta autenticar o usuário
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('success', 'Login realizado com sucesso!');
+    // Tenta autenticar o usuário
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Você precisa verificar seu e-mail antes de acessar a conta.'
+            ])->withInput($request->only('email'));
         }
 
-        // Se falhar, retorna com erro
-        return back()->withErrors([
-            'email' => 'As credenciais fornecidas estão incorretas.',
-        ])->withInput($request->only('email'));
+        return redirect()->intended('/dashboard')->with('success', 'Login realizado com sucesso!');
     }
+
+    // Se falhar, retorna com erro
+    return back()->withErrors([
+        'email' => 'As credenciais fornecidas estão incorretas.',
+    ])->withInput($request->only('email'));
+}
 
     /**
      * Faz logout do usuário.

@@ -26,7 +26,8 @@ class InvestimentoController extends Controller
 
 
 
-        $percentualDia = RentabilidadeDiaria::orderByDesc('data_referencia')->value('rentabilidade_percentual') ?? 0;
+       $percentualDia = RentabilidadeDiaria::orderByDesc('created_at')->value('rentabilidade_percentual') ?? 0;
+
 
         // Verifica saldo
         if ($user->saldo < $valorInvestido) {
@@ -58,17 +59,15 @@ class InvestimentoController extends Controller
         return redirect()->back()->with('success', 'Investimento realizado com sucesso!');
     }
 
-    public function create()
-    {
-        $hoje = now()->toDateString();
-        $rentabilidade = RentabilidadeDiaria::where('data_referencia', $hoje)->first();
+public function create()
+{
+    $rentabilidade = RentabilidadeDiaria::orderByDesc('created_at')->first(); // ou data_referencia
+    $percentual = $rentabilidade?->rentabilidade_percentual ?? 0;
 
-        $percentual = $rentabilidade?->rentabilidade_percentual ?? 0;
-
-        return view('dashboard.investir', [
-            'percentual_dia' => $percentual
-        ]);
-    }
+    return view('dashboard.investir', [
+        'percentual_dia' => $percentual
+    ]);
+}
 
     public function carteira()
     {
@@ -98,42 +97,42 @@ class InvestimentoController extends Controller
     }
 
     public function show($id)
-    {
-        $investimento = Investimento::findOrFail($id);
+{
+    $investimento = Investimento::findOrFail($id);
 
-        $valorInicial = $investimento->valor;
-        $dataInicio = Carbon::parse($investimento->data_inicio)->startOfDay();
-        $dataHoje = now()->startOfDay();
+    $valorInicial = $investimento->valor;
+    $dataInicio = Carbon::parse($investimento->data_inicio)->startOfDay();
+    $dataHoje = now()->startOfDay();
 
-        $rentabilidades = RentabilidadeDiaria::whereBetween('data_referencia', [$dataInicio->toDateString(), $dataHoje->toDateString()])
-            ->orderBy('data_referencia')
-            ->get();
+    // Dias decorridos desde o início até hoje (ou até o vencimento)
+    $dias = $dataInicio->diffInDays(min($dataHoje, Carbon::parse($investimento->data_vencimento)));
 
-        $rendimentoAcumulado = 0;
+    // Usa apenas a taxa salva no investimento
+    $taxa = $investimento->rentabilidade_percentual / 100;
 
-        foreach ($rentabilidades as $r) {
-            $rendimentoAcumulado += $valorInicial * ($r->rentabilidade_percentual / 100);
-        }
+    // Juros simples
+    $rendimentoAcumulado = $valorInicial * $taxa * $dias;
+    $valorAtual = $valorInicial + $rendimentoAcumulado;
 
-        $valorAtual = $valorInicial + $rendimentoAcumulado;
+    // Rendimento do dia (hoje)
+    $rendimentoHoje = $valorInicial * $taxa;
 
-        $rendimentoHoje = 0;
-        $rentabilidadeHoje = $rentabilidades->firstWhere('data_referencia', $dataHoje->toDateString());
-        if ($rentabilidadeHoje) {
-            $rendimentoHoje = round($valorInicial * ($rentabilidadeHoje->rentabilidade_percentual / 100), 2);
-        }
+    $investimento->valor_atual = round($valorAtual, 2);
+    $investimento->rendimento_acumulado = round($rendimentoAcumulado, 2);
 
-        $investimento->valor_atual = round($valorAtual, 2);
-        $investimento->rendimento_acumulado = round($rendimentoAcumulado, 2);
-
-        return view('dashboard.detalhes', [
-            'investimento' => $investimento,
-            'rendimentoAcumulado' => $investimento->rendimento_acumulado,
-            'rendimentoHoje' => $rendimentoHoje,
-            'saldo' => $valorAtual,
-            'rentabilidades' => $rentabilidades
-        ]);
-    }
+    return view('dashboard.detalhes', [
+        'investimento' => $investimento,
+        'rendimentoAcumulado' => $investimento->rendimento_acumulado,
+        'rendimentoHoje' => round($rendimentoHoje, 2),
+        'saldo' => $valorAtual,
+        'rentabilidades' => collect([ // histórico simulado apenas com a taxa fixa do investimento
+            (object)[
+                'data_referencia' => $investimento->data_inicio,
+                'rentabilidade_percentual' => $investimento->rentabilidade_percentual,
+            ]
+        ])
+    ]);
+}
 
     public function reinvestir(Request $request, $id)
     {

@@ -11,7 +11,7 @@ class AdminInvestimentoController extends Controller
 {
     $validated = $request->validate([
         'rentabilidade_dia' => 'required|numeric',
-        'data_referencia' => 'required|date',
+      'data_referencia' => 'required|date|before_or_equal:today',
         'obs' => 'nullable|string',
     ]);
 

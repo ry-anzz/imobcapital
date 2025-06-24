@@ -72,7 +72,7 @@
 </div>
 
 <script>
-    const rentabilidadePercentual = {{ $percentual_dia ?? 0 }};
+    const rentabilidadePercentual = {{ $percentual_dia ?? 0 }}; // ex: 0.8 (% ao dia)
 
     document.addEventListener('DOMContentLoaded', () => {
         const valorInput = document.getElementById('valor');
@@ -85,25 +85,20 @@
 
         const prazos = [3, 7, 15, 30, 45, 60, 90, 180];
 
-        function formatarMoeda(valor) {
-            valor = valor.replace(/\D/g, '');
-            valor = (parseInt(valor) / 100).toFixed(2) + '';
-            valor = valor.replace('.', ',');
-            valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            return 'R$ ' + valor;
+        function formatarMoedaBR(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        function obterValorNumerico(valorStr) {
-           let valor = valorStr.replace(/\D/g, ''); // tira tudo que não é número
-    return valor ? parseFloat(valor) / 100 : 0;
+        function limparMascara(valor) {
+            return parseFloat(valor.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
         }
 
         function atualizarSimulacao() {
-            const valor = obterValorNumerico(valorInput.value);
+            const valorDigitado = limparMascara(valorInput.value);
             const prazoIndex = parseInt(prazoInput.value);
-            const prazoDias = prazos[prazoIndex];
+            const dias = prazos[prazoIndex];
 
-            if (isNaN(valor) || valor === 0) {
+            if (!valorDigitado || isNaN(valorDigitado)) {
                 rentabilidadeEl.textContent = '--';
                 vencimentoEl.textContent = '--';
                 totalVencimentoEl.textContent = '--';
@@ -111,38 +106,34 @@
                 return;
             }
 
-            // Corrigido: envia valor com ponto decimal
-            valorLimpoInput.value = valor.toFixed(2).replace(',', '.');
+            valorLimpoInput.value = valorDigitado.toFixed(2);
 
-            const taxaDiaria = rentabilidadePercentual / 100;
-            const rendimento = valor * taxaDiaria * prazoDias;
-            const total = valor + rendimento;
+            const taxaDiaria = rentabilidadePercentual / 100; // ex: 0.5 para 50%
+            const rendimento = valorDigitado * taxaDiaria * dias;
+            const total = valorDigitado + rendimento;
 
-            prazoDisplay.textContent = prazoDias;
-            rentabilidadeEl.textContent = (taxaDiaria * prazoDias * 100).toFixed(2) + '% no período';
+            prazoDisplay.textContent = dias;
+            rentabilidadeEl.textContent = `${(taxaDiaria * dias * 100).toFixed(2)}% no período`;
 
             const hoje = new Date();
-            const vencimento = new Date();
-            vencimento.setDate(hoje.getDate() + prazoDias);
+            const vencimento = new Date(hoje.setDate(hoje.getDate() + dias));
             vencimentoEl.textContent = vencimento.toLocaleDateString('pt-BR');
 
-            totalVencimentoEl.textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+            totalVencimentoEl.textContent = formatarMoedaBR(total);
         }
 
         valorInput.addEventListener('input', () => {
-            const valorNumerico = valorInput.value.replace(/\D/g, '');
-            valorInput.value = formatarMoeda(valorNumerico);
-
-            setTimeout(() => {
-                valorInput.selectionStart = valorInput.selectionEnd = valorInput.value.length;
-            }, 0);
-
+            let valor = valorInput.value.replace(/\D/g, '');
+            valor = (parseInt(valor) / 100).toFixed(2);
+            valor = valor.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            valorInput.value = `R$ ${valor}`;
             atualizarSimulacao();
         });
 
         prazoInput.addEventListener('input', atualizarSimulacao);
 
-        atualizarSimulacao(); // inicializa ao carregar
+        atualizarSimulacao(); // chama no carregamento inicial
     });
 </script>
+
 @endsection
