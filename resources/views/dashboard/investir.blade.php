@@ -9,23 +9,21 @@
     <div class="invest-form-card">
         <h3>Simular e realizar investimento</h3>
 
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        <!-- Modal de Mensagem -->
+<div id="msgModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <p id="modalMessage"></p>
+  </div>
+</div>
 
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+@if($percentual_dia > 0)
+    <p><strong>Rentabilidade definida pelo admin:</strong> {{ number_format($percentual_dia, 2, ',', '.') }}% ao dia</p>
+    <p><strong>Sua rentabilidade final com bônus:</strong> {{ number_format($percentual_ajustado, 4, ',', '.') }}% ao dia</p>
+@else
+    <p><strong>Atenção:</strong> Nenhuma rentabilidade foi definida para hoje.</p>
+@endif
 
-        @if($percentual_dia > 0)
-            <p><strong>Rentabilidade atual:</strong> {{ number_format($percentual_dia, 2, ',', '.') }}% ao dia</p>
-        @else
-            <p><strong>Atenção:</strong> Nenhuma rentabilidade foi definida para hoje.</p>
-        @endif
 
         <form action="{{ route('investimentos.store') }}" method="POST">
             @csrf
@@ -72,7 +70,8 @@
 </div>
 
 <script>
-    const rentabilidadePercentual = {{ $percentual_dia ?? 0 }}; // ex: 0.8 (% ao dia)
+  const rentabilidadePercentual = {{ $percentual_ajustado ?? 0 }};
+
 
     document.addEventListener('DOMContentLoaded', () => {
         const valorInput = document.getElementById('valor');
@@ -134,6 +133,40 @@
 
         atualizarSimulacao(); // chama no carregamento inicial
     });
+
+    //mensagem de erro ou sucesso
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('msgModal');
+  const closeBtn = document.getElementById('closeModal');
+  const modalMessage = document.getElementById('modalMessage');
+
+  // Mensagens vindas do backend
+  const successMsg = @json(session('success'));
+  const errorMsg = @json(session('error'));
+
+  if (successMsg) {
+    modalMessage.textContent = successMsg;
+    modal.style.display = 'flex';
+    modalMessage.style.color = 'green';
+  } else if (errorMsg) {
+    modalMessage.textContent = errorMsg;
+    modal.style.display = 'flex';
+    modalMessage.style.color = 'red';
+  }
+
+  closeBtn.onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+});
+
+
 </script>
 
 @endsection

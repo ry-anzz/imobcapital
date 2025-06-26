@@ -18,6 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'codigo_convite',
         'password',
         'saldo',
+        'indicador_id',
+        'nivel', 
     ];
 
     protected $hidden = [
@@ -25,17 +27,27 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'reset_code_created_at' => 'datetime',
-        ];
-    }
+protected $casts = [
+    'email_verified_at' => 'datetime',
+    'password' => 'hashed',
+    'reset_code_created_at' => 'datetime',
+];
 
-    public function investimentos()
-    {
-        return $this->hasMany(Investimento::class);
-    }
+
+public function investimentos()
+{
+    return $this->hasMany(\App\Models\Investimento::class, 'user_id');
+}
+
+
+    public function indicador()
+{
+    return $this->belongsTo(User::class, 'indicador_id');
+}
+
+public function indicados()
+{
+    return $this->hasMany(User::class, 'indicador_id');
+}
+
 }

@@ -11,63 +11,80 @@ use Carbon\Carbon;
 class InvestimentoController extends Controller
 {
     public function store(Request $request)
-    {
-        $user = Auth::user();
-     
-        $request->validate([
-            'valor' => 'required|string',
-            'prazo' => 'required|integer|min:0|max:7',
-        ]);
+{
+    $user = Auth::user();
+ 
+    $request->validate([
+        'valor' => 'required|string',
+        'prazo' => 'required|integer|min:0|max:7',
+    ]);
 
-        $prazos = [3, 7, 15, 30, 45, 60, 90, 180];
-        $prazoDias = $prazos[$request->prazo];
+    $prazos = [3, 7, 15, 30, 45, 60, 90, 180];
+    $prazoDias = $prazos[$request->prazo];
 
-      $valorInvestido = (float) $request->valor;
+    $valorInvestido = (float) $request->valor;
 
+    // Última rentabilidade diária
+    $percentualDia = RentabilidadeDiaria::orderByDesc('created_at')->value('rentabilidade_percentual') ?? 0;
 
+    // Percentuais por nível (em %)
+    $percentuais = [15, 25, 40, 55, 80];
 
-       $percentualDia = RentabilidadeDiaria::orderByDesc('created_at')->value('rentabilidade_percentual') ?? 0;
+    $nivel = $user->nivel ?? 0;
+    $percentualNivel = $nivel > 0 ? $percentuais[$nivel - 1] : 0;
 
+    // Calcula o ganho final baseado no percentual do nível
+    $percentualAjustado = ($percentualNivel / 100) * ($percentualDia / 100); // Ex: 15% de 1% = 0.15%
+    $percentualAjustado *= 100; // Volta para formato de percentual, ex: 0.15%
 
-        // Verifica saldo
-        if ($user->saldo < $valorInvestido) {
-            return redirect()->back()->with('error', 'Saldo insuficiente.');
-        }
-
-        $taxa = $percentualDia / 100;
-        $rendimento = $valorInvestido * $taxa * $prazoDias;
-        $totalEstimado = $valorInvestido + $rendimento;
-
-        $hoje = now();
-        $vencimento = $hoje->copy()->addDays($prazoDias);
-
-        // Cria o investimento
-        Investimento::create([
-            'user_id' => $user->id,
-            'valor' => $valorInvestido,
-            'prazo_dias' => $prazoDias,
-            'rentabilidade_percentual' => $percentualDia,
-            'data_inicio' => $hoje,
-            'data_vencimento' => $vencimento,
-            'valor_estimado' => $totalEstimado,
-        ]);
-
-        // Atualiza o saldo do usuário
-        $user->saldo -= $valorInvestido;
-        $user->save();
-
-        return redirect()->back()->with('success', 'Investimento realizado com sucesso!');
+    // Verifica saldo
+    if ($user->saldo < $valorInvestido) {
+        return redirect()->back()->with('error', 'Saldo insuficiente.');
     }
+
+    $taxa = $percentualAjustado / 100;
+    $rendimento = $valorInvestido * $taxa * $prazoDias;
+    $totalEstimado = $valorInvestido + $rendimento;
+
+    $hoje = now();
+    $vencimento = $hoje->copy()->addDays($prazoDias);
+
+    // Cria o investimento
+    Investimento::create([
+        'user_id' => $user->id,
+        'valor' => $valorInvestido,
+        'prazo_dias' => $prazoDias,
+        'rentabilidade_percentual' => $percentualAjustado, // Salva o valor ajustado
+        'data_inicio' => $hoje,
+        'data_vencimento' => $vencimento,
+        'valor_estimado' => $totalEstimado,
+    ]);
+
+    // Atualiza o saldo do usuário
+    $user->saldo -= $valorInvestido;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Investimento realizado com sucesso!');
+}
+
 
 public function create()
 {
-    $rentabilidade = RentabilidadeDiaria::orderByDesc('created_at')->first(); // ou data_referencia
-    $percentual = $rentabilidade?->rentabilidade_percentual ?? 0;
+    $rentabilidade = RentabilidadeDiaria::orderByDesc('created_at')->first();
+    $percentualDia = $rentabilidade?->rentabilidade_percentual ?? 0;
+
+    $percentuais = [15, 25, 40, 55, 80];
+    $nivel = auth()->user()->nivel ?? 0;
+    $percentualNivel = $nivel > 0 ? $percentuais[$nivel - 1] : 0;
+
+    $percentualAjustado = ($percentualNivel / 100) * ($percentualDia / 100) * 100;
 
     return view('dashboard.investir', [
-        'percentual_dia' => $percentual
+        'percentual_dia' => $percentualDia,           // Exibe ao usuário o percentual original do dia
+        'percentual_ajustado' => $percentualAjustado  // Percentual final considerando o bônus do nível
     ]);
 }
+
 
     public function carteira()
     {

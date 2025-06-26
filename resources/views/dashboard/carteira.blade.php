@@ -20,7 +20,7 @@
 
             <div class="investimento-acao">
                 <a href="{{ route('investimentos.show', $investimento->id) }}" class="ver-detalhes">
-                    Detalhes do investimento #{{ $investimento->id }}
+                    Detalhes do investimento
                 </a>
             </div>
         </div>

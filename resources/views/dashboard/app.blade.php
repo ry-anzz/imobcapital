@@ -31,7 +31,7 @@
     </div>
 
 
-            <span style="color:#FFA500">Nível 10</span>
+            <span style="color:#FFA500">Nível {{Auth::user()->nivel}}</span>
         </div>
     </div>
 

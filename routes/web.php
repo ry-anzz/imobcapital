@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\PasswordRecoveryController;
 use App\Http\Controllers\AdminInvestimentoController;
 use App\Http\Controllers\InvestimentoController;
 use App\Http\Controllers\CarteiraController;
+use App\Http\Controllers\IndicacaoController;
+
 
 // Página inicial
 Route::get('/', function () {
@@ -84,9 +86,8 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard.perfil');
     });
 
-    Route::get('/dashboard/indicar', function () {
-        return view('dashboard.indicar');
-    });
+ Route::get('/dashboard/indicar', [IndicacaoController::class, 'index'])->name('indicar');
+
 
     Route::post('/dashboard/{id}/reinvestir', [InvestimentoController::class, 'reinvestir'])->name('investimentos.reinvestir');
     Route::post('/dashboard/{id}/resgatar', [InvestimentoController::class, 'resgatar'])->name('investimentos.resgatar');

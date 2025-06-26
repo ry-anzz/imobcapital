@@ -3,18 +3,45 @@
 @section('content')
 <div class="dashboard-title">
     <h2>Minhas Indicações</h2>
-   
 </div>
 
 <div class="indicacoes-container">
     <div class="niveis-indicacao">
-         <p class="codigo-indicacao">Seu código de indicação: <strong>ABC123</strong></p>
+        <p class="codigo-indicacao">Seu código de indicação: <strong>{{ Auth::user()->codigo_convite }}</strong></p>
+
         <h3>Seus Níveis</h3>
         <div class="cards-niveis">
-            @for ($i = 1; $i <= 10; $i++)
-                <div class="card-nivel {{ $i <= 4 ? 'conquistado' : '' }} {{ $i === 4 ? 'atual' : '' }}">
-                    <p><strong>Nível {{ $i }}</strong></p>
-                    <p>{{ 10 + ($i - 1) * 5 }}%</p>
+            @php
+                $percentuais = [15, 25, 40, 55, 80];
+            @endphp
+
+            @for ($i = 1; $i <= 5; $i++)
+                <div class="card-nivel 
+                    {{ $nivel_atual >= $i ? 'conquistado' : '' }} 
+                    {{ $nivel_atual === $i ? 'atual' : '' }}">
+                    
+                    <p><strong>{{ $i < 5 ? 'Nível ' . $i : 'Nível Supremo' }}</strong></p>
+                    <p>{{ $percentuais[$i - 1] }}%</p>
+
+                    <div class="requisitos-nivel">
+                        <ul>
+                            @if ($i === 1)
+                                <li>Confirmar e-mail</li>
+                            @elseif ($i === 2)
+                                <li>5 indicados com pelo menos R$100 investido</li>
+                            @elseif ($i === 3)
+                                <li>Completar o nível 2</li>
+                                <li>Ter saldo de pelo menos R$5.000</li>
+                            @elseif ($i === 4)
+                                <li>5 indicados com pelo menos R$500 cada</li>
+                                <li>Ter saldo de pelo menos R$15.000</li>
+                            @elseif ($i === 5)
+                                <li>10 indicados com pelo menos R$1.500 cada</li>
+                                <li>Ter saldo de pelo menos R$25.000</li>
+                                <li>Ter investido pelo menos R$100.000 no total</li>
+                            @endif
+                        </ul>
+                    </div>
                 </div>
             @endfor
         </div>
@@ -24,9 +51,9 @@
         <div class="resumo-indicacoes-card">
             <h3>Resumo</h3>
             <ul>
-                <li><strong>Total de pessoas indicadas:</strong> 4</li>
-                <li><strong>Seu nível atual:</strong> Nível 4</li>
-                <li><strong>Porcentagem de ganho por indicado:</strong> 25%</li>
+                <li><strong>Total de pessoas indicadas:</strong> {{ $total_indicados }}</li>
+                <li><strong>Seu nível atual:</strong> {{ $nivel_atual < 5 ? 'Nível ' . $nivel_atual : 'Nível Supremo' }}</li>
+                <li><strong>Porcentagem de ganho por indicado:</strong> {{ $percentuais[$nivel_atual - 1] }}%</li>
             </ul>
         </div>
 
@@ -38,29 +65,22 @@
                         <th>Nome</th>
                         <th>E-mail</th>
                         <th>Data da indicação</th>
+                        <th>Investimento Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>João Silva</td>
-                        <td>joao@email.com</td>
-                        <td>01/06/2025</td>
-                    </tr>
-                    <tr>
-                        <td>Maria Santos</td>
-                        <td>maria@email.com</td>
-                        <td>02/06/2025</td>
-                    </tr>
-                    <tr>
-                        <td>Pedro Lima</td>
-                        <td>pedro@email.com</td>
-                        <td>03/06/2025</td>
-                    </tr>
-                    <tr>
-                        <td>Ana Paula</td>
-                        <td>ana@email.com</td>
-                        <td>04/06/2025</td>
-                    </tr>
+                    @forelse ($indicados as $ind)
+                        <tr>
+                            <td>{{ $ind->name }}</td>
+                            <td>{{ $ind->email }}</td>
+                            <td>{{ $ind->created_at->format('d/m/Y') }}</td>
+                            <td>R$ {{ number_format($ind->investimento_total, 2, ',', '.') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">Nenhuma indicação cadastrada.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
